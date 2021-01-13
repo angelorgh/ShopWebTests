@@ -1,0 +1,159 @@
+@using Microsoft.AspNetCore.Http
+@using Microsoft.VisualBasic.CompilerServices
+@using Shop.Utilities
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    string username = HttpContextAccessor.HttpContext.Session.GetString("Username");
+    string nombre = HttpContextAccessor.HttpContext.Session.GetString("Nombre");
+    string apellido = HttpContextAccessor.HttpContext.Session.GetString("Apellido");
+    bool isUserConnected = string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("Username"));
+	decimal totalITBIS = SessionHelper.GetTotalITBISOfCart(ViewBag.cart);
+	totalITBIS = Decimal.Round(totalITBIS,2);
+	decimal totalPrice = SessionHelper.GetTotalPriceOfCart(ViewBag.cart);
+	totalPrice = Decimal.Round(totalPrice, 2);
+	decimal totalPriceWithITBIS = totalPrice + totalITBIS;
+	totalPriceWithITBIS = Decimal.Round(totalPriceWithITBIS,2);
+	int itemcount = SessionHelper.GetNumberOfItemsInCart(ViewBag.cart);
+}
+@model List<CarritoItem>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<section class="section-pagetop">
+<div class="container">
+	<h2 class="title-page">Mi Carrito</h2>
+</div>
+</section>
+
+<section class="section-content padding-y">
+<div class="container">
+
+    <div class="row">
+    	<aside class="col-lg-9">
+    <div class="card">
+    <table class="table table-borderless table-shopping-cart">
+    <thead class="text-muted">
+    <tr class="small text-uppercase">
+      <th scope="col">Producto</th>
+      <th scope="col" width="120">Cantidad</th>
+      <th scope="col" width="120">Precio</th>
+      <th scope="col" class="text-right" width="200"> </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var carritoitem in ViewBag.cart)
+    {
+	    <tr>
+		    <td>
+			    <figure class="itemside align-items-center">
+				    <div class="aside"><img src="@Url.Content(carritoitem.Producto.Image)" class="img-sm"></div>
+				    <figcaption class="info">
+					    <a href="#" class="title text-dark">@carritoitem.Producto.Nombre</a>
+					    <p class="text-muted small"><br> Marca: @carritoitem.Producto.marca.Nombre</p>
+				    </figcaption>
+			    </figure>
+		    </td>
+		    <td>
+	@* 		    <select class="form-control"> *@
+	@* 			    <option>1</option> *@
+	@* 			    <option>2</option> *@
+	@* 			    <option>3</option> *@
+	@* 			    <option>4</option> *@
+	@* 		    </select> *@
+				<div class="col"> 
+    				<div class="input-group input-spinner">
+    					<div class="input-group-prepend">
+    					<a href="@Url.Action("RemoveFromCart","Cart", new {idproducto = carritoitem.Producto.ProductoID, cantidad = 1})" class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </a>
+    					</div>
+    					<input type="text" class="form-control"  value="@carritoitem.Cantidad">
+    					<div class="input-group-append">
+    					<a href="@Url.Action("AddToCart","Cart", new {idproducto = carritoitem.Producto.ProductoID, cantidad = 1})" class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
+    					</div>
+    				</div> <!-- input-group.// -->
+    			</div> <!-- col.// -->
+		    </td>
+		    <td>
+			    <div class="price-wrap">
+				    @{
+					    decimal totalitemprice = carritoitem.Producto.Precio * carritoitem.Cantidad;}
+				    <var class="price">
+					    RD$ @totalitemprice
+				    </var>
+				    <small class="text-muted"> RD$ @carritoitem.Producto.Precio cada uno </small>
+			    </div> <!-- price-wrap .// -->
+		    </td>
+		    <td class="text-right">
+			    <a href="@Url.Action("RemoveFromCart","Cart", new {idproducto = carritoitem.Producto.ProductoID, cantidad = carritoitem.Cantidad})" class="btn btn-light"> Remover</a>
+		    </td>
+	    </tr>
+    }
+    
+    </tbody>
+    </table>
+    
+    <div class="card-body border-top">
+    	<p class="icontext"><i class="icon text-success fa fa-truck"></i> Entrega Gratis en 2-3 Dias</p>
+    </div> <!-- card-body.// -->
+    
+    </div> <!-- card.// -->
+    
+    	</aside> <!-- col.// -->
+    	<aside class="col-lg-3">
+    
+    @* <div class="card mb-3"> *@
+    @* <div class="card-body"> *@
+    @* <form> *@
+    @* 	<div class="form-group"> *@
+    @* 		<label>Have coupon?</label> *@
+    @* 		<div class="input-group"> *@
+    @* 			<input type="text" class="form-control" name="" placeholder="Coupon code"> *@
+    @* 			<span class="input-group-append">  *@
+    @* 				<button class="btn btn-primary">Apply</button> *@
+    @* 			</span> *@
+    @* 		</div> *@
+    @* 	</div> *@
+    @* </form> *@
+    @* </div> *@
+    @* </div> *@
+    
+    <div class="card">
+    <div class="card-body">
+    		<dl class="dlist-align">
+    		  <dt>Precio total:</dt>
+    		  <dd class="text-right">RD$ @totalPrice</dd>
+    		</dl>
+    		<dl class="dlist-align">
+    		  <dt>ITBIS:</dt>
+    		  <dd class="text-right">RD$ @totalITBIS</dd>
+    		</dl>
+    		<dl class="dlist-align">
+    		  <dt>Total:</dt>
+    		  <dd class="text-right text-dark b"><strong>RD$ @totalPriceWithITBIS</strong></dd>
+    		</dl>
+    		<hr>
+		    <p class="text-center mb-3">
+			    <img src="~/images/misc/payments.png" height="26">
+		    </p>
+		    @{
+			    if (itemcount < 1 || isUserConnected)
+			    {
+				    <button href="#" class="btn btn-primary btn-block" disabled> Hacer Compra </button>
+			    }
+			    else
+			    {
+				    <a href="@Url.Action("OrderPage","Order")" class="btn btn-primary btn-block"> Hacer Compra </a>
+			    }
+		    }
+    		
+    		<a href="@Url.Action("MainPage","Home")" class="btn btn-light btn-block"> Continuar Comprando </a>
+    </div> <!-- card-body.// -->
+    </div> <!-- card.// -->
+    
+    	</aside> <!-- col.// -->
+    
+    
+    </div> <!-- row.// -->
+    
+</div> <!-- container .//  -->
+</section>

@@ -1,0 +1,187 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Editar Producto";
+}
+
+@model Producto
+<link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.css" />
+<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/lib/bootstrap-select/js/bootstrap-select.js"></script>
+
+
+<div class="text-center">
+    <h1 class="display-4"><strong>EDITAR PRODUCTO</strong></h1>
+    <h1 class="display-4">@Model.Nombre</h1>
+</div>
+
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="nombre">Nombre:</label>
+        <div class="col-sm-10">
+            <input id="nombre" type="text" class="form-control" value="@Model.Nombre">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="descripcion">Descripcion:</label>
+        <div class="col-sm-10">
+            <textarea id="descripcion" class="form-control" rows="5">@Model.Descripcion</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="precio">Precio:</label>
+        <div class="col-sm-10">
+            <input id="precio" type="number" class="form-control" value="@Model.Precio">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="marca">Marca:</label>
+        <select id="marca" class="selectpicker" data-live-search="true">
+            @{
+                foreach (var marca in ViewBag.Marcas)
+                {
+                    if (marca.MarcaID != Model.Marca.MarcaID)
+                    {
+                        <option value="@marca.MarcaID">@marca.Nombre</option>
+                    }
+                    else
+                    {
+                        <option value="@marca.MarcaID" selected>@marca.Nombre</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="categoria">Categoria:</label>
+        <select id="categoria" class="selectpicker" data-live-search="true">
+            @{
+                foreach (var categoria in ViewBag.Categorias)
+                {
+                    if (categoria.CategoriaID != Model.Categoria.CategoriaID)
+                    {
+                        <option value="@categoria.CategoriaID">@categoria.Nombre</option>
+                    }
+                    else
+                    {
+                        <option value="@categoria.CategoriaID" selected>@categoria.Nombre</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="estadoProducto">Estado:</label>
+        <select id="estadoProducto" class="selectpicker" data-live-search="true">
+            @{
+                foreach (var estado in ViewBag.estadosProductos)
+                {
+                    if (estado.EstadoProductoID != Model.Estado.EstadoProductoID)
+                    {
+                        <option value="@estado.EstadoProductoID">@estado.Nombre</option>
+                    }
+                    else
+                    {
+                        <option value="@estado.EstadoProductoID" selected>@estado.Nombre</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default"><strong>Guardar Cambios</strong></button>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <a type="button" class="btn btn-default" href="@Url.Action("ConsultarProductos","Consultar")"><strong>Cancelar</strong></a>
+        </div>
+    </div>
+</form>
+
+<script>
+        $(document).ready(function () {
+            $("#precio").inputfilter();
+            var options = { allowNumeric: true, allowText: false }
+            $("#precio").inputfilter(options);
+
+            $("form").submit(function () {
+                event.preventDefault();
+
+                var nombre = $("#nombre");
+                var descripcion = $("#descripcion");
+                var precio = $("#precio");
+                var marca = $("#marca");
+                var categoria = $("#categoria");
+                var estadoProducto = $("#estadoProducto");
+
+                if (nombre.val().trim() == "") {
+                    nombre.removeClass("is-valid");
+                    nombre.addClass("is-invalid");
+                } else {
+                    nombre.removeClass("is-invalid");
+                    nombre.addClass("is-valid")
+                }
+
+                if (descripcion.val().trim() == "") {
+                    descripcion.removeClass("is-valid");
+                    descripcion.addClass("is-invalid");
+                } else {
+                    descripcion.removeClass("is-invalid");
+                    descripcion.addClass("is-valid");
+                }
+
+                if (precio.val().trim() == "") {
+                    precio.removeClass("is-valid");
+                    precio.addClass("is-invalid");
+                } else {
+                    precio.removeClass("is-invalid");
+                    precio.addClass("is-valid");
+                }
+
+                if ($(".is-valid").length == 3) {
+                    EditarProducto();
+                }
+
+
+            });
+
+            function EditarProducto() {
+                var nombre = $("#nombre").val();
+                var descripcion = $("#descripcion").val();
+                var precio = $("#precio").val();
+                var marca = $("#marca").val();
+                var categoria = $("#categoria").val();
+                var estadoProducto = $("#estadoProducto").val();
+
+                $.ajax({
+                    url: "@Url.Content("~/Consultar/EditarProducto")",
+                    type: "POST",
+                    data: {
+                        productoid: @Model.ProductoID,
+                        marcaid: marca,
+                        categoriaid: categoria,
+                        estadoid: estadoProducto,
+                        nombre: nombre,
+                        descripcion: descripcion,
+                        precio: precio
+                    },
+                    success: function (response) {
+                        if (response == false) {
+                            alert("Ha ocurrido un error en el proceso de actualización.")
+                        } else {
+                            alert("Se ha realizado la actualización correctamente.")
+                            window.location = "@Url.Content("~/Consultar/ConsultarProductos")";
+                        }
+                    },
+                    error: function (response) {
+                    },
+
+                });
+            }
+
+        });
+</script>

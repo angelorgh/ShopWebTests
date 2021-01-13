@@ -1,0 +1,102 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<section class="section-content padding-y bg">
+    <div class="container">
+
+        <!-- ============================ COMPONENT 2 ================================= -->
+        <div class="row">
+            <main class="col-md-8">
+                
+
+
+                <article class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">
+                            Mis Direcciones <a href="AddDirectionPage" class="btn btn-primary btn-sm">Agregar </a> 
+                                                                                                                        <input type="button"  name="update" value="Modificar" class="btn btn-primary btn-sm">
+                            <input type="button" id="pedirbutton" name="delete" value="Eliminar dirreción" class="btn btn-danger btn-sm">
+                        </h4>
+                        
+                        <form action="">
+                            <div class="row">
+                                @{
+                                    foreach (var direccion in ViewBag.Direcciones)
+                                    {
+                                        <div class="form-group col-sm-6">
+                                            <label class="js-check box">
+                                                <input type="radio" name="direccion" id="dirrecionCardID" value="@direccion.IDDireccion" checked>
+                                                <h6 class="title">Direccion</h6>
+                                                <p class="text-muted">@direccion.Direccion1</p>
+                                                <p class="text-muted">@direccion.Direccion2</p>
+                                                <p class="text-muted">@direccion.Provincia</p>
+                                                <p class="text-muted">@direccion.Ciudad</p>
+                                               
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </form>
+                    </div>
+                </article>
+
+
+               
+
+            </main> <!-- col.// -->
+            
+        </div> <!-- row.// -->
+        <!-- ============================ COMPONENT 2 END//  ================================= -->
+
+    </div> <!-- container .//  -->
+</section>
+
+<script>
+        /// some script
+
+        // jquery ready start
+    $(document).ready(function () {
+
+        $("input[name='delete']").click(function () {
+            event.preventDefault()
+            //console.log(radioDireccion.val());
+            Delete();
+
+            function Delete() {
+                event.preventDefault()
+                var radioDireccion = $("input[name='direccion']:checked");
+                 $.ajax({
+                    url: "@Url.Action("EliminarDireccion","Profile")",
+                    type: "POST",
+                     data: { idDireccion: radioDireccion.val() },
+                    success: function (response) {
+                        if (!response) {
+
+                        } else {
+                            window.location = "@Url.Content("~/Profile/DirectionPage")";
+                        }
+                    }
+
+                });
+            }
+        });
+
+        $("input[name='update']").click(function () {
+            event.preventDefault()
+            //console.log(radioDireccion.val());
+            Update();
+            function Update() {
+                event.preventDefault()
+                var radioDireccion = $("input[name='direccion']:checked");
+                window.location.href = "@Url.Action("UpdateDirectionPage", "Profile")?idDireccion=" + radioDireccion.val();
+            }
+        });
+
+    });
+
+
+            // jquery end
+</script>

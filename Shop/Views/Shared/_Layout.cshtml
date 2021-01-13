@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Main Page - Shop</title>
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+    <!-- jQuery -->
+    <script src="js/jquery-2.0.0.min.js" type="text/javascript"></script>
+
+    <!-- Bootstrap4 files-->
+    <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
+
+    <!-- Font awesome 5 -->
+    <link href="fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
+
+    <!-- custom style -->
+    <link href="css/ui.css" rel="stylesheet" type="text/css" />
+    <link href="css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+
+    <!-- custom javascript -->
+    <script src="js/script.js" type="text/javascript"></script>
+
+    @*<link href="~/plugins/owlcarousel/assets/owl.carousel.css" rel="stylesheet">
+        <link href="~/plugins/owlcarousel/assets/owl.theme.default.css" rel="stylesheet">
+        <script src="~/plugins/owlcarousel/owl.carousel.min.js"></script>*@
+
+    <script type="text/javascript">
+        /// some script
+
+        // jquery ready start
+        $(document).ready(function () {
+            // jQuery code
+
+        });
+                // jquery end
+    </script>
+
+
+
+</head>
+<body>
+
+    @{
+        <partial>
+            Html.RenderPartial("_MenuBar");
+        </partial>
+     }
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <footer class="section-footer border-top">
+        <div class="container">
+            <section class="footer-top padding-y">
+                <div class="row">
+                    <aside class="col-md-4">
+                        <article class="mr-3">
+                            <img src="~/images/logo.png" class="logo-footer">
+                            <p class="mt-3">Some short text about company like You might remember the Dell computer commercials in which a youth reports this exciting news to his friends.</p>
+                            <div>
+                                <a class="btn btn-icon btn-light" title="Facebook" target="_blank" href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-icon btn-light" title="Instagram" target="_blank" href="#"><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-icon btn-light" title="Youtube" target="_blank" href="#"><i class="fab fa-youtube"></i></a>
+                                <a class="btn btn-icon btn-light" title="Twitter" target="_blank" href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </article>
+                    </aside>
+                    <aside class="col-sm-3 col-md-2">
+                        <h6 class="title">About</h6>
+                        <ul class="list-unstyled">
+                            <li> <a href="#">About us</a></li>
+                            <li> <a href="#">Services</a></li>
+                            <li> <a href="#">Rules and terms</a></li>
+                            <li> <a href="#">Blogs</a></li>
+                        </ul>
+                    </aside>
+                    <aside class="col-sm-3 col-md-2">
+                        <h6 class="title">Services</h6>
+                        <ul class="list-unstyled">
+                            <li> <a href="#">Help center</a></li>
+                            <li> <a href="#">Money refund</a></li>
+                            <li> <a href="#">Terms and Policy</a></li>
+                            <li> <a href="#">Open dispute</a></li>
+                        </ul>
+                    </aside>
+                    <aside class="col-sm-3  col-md-2">
+                        <h6 class="title">For users</h6>
+                        <ul class="list-unstyled">
+                            <li> <a href="#"> User Login </a></li>
+                            <li> <a href="#"> User register </a></li>
+                            <li> <a href="#"> Account Setting </a></li>
+                            <li> <a href="#"> My Orders </a></li>
+                            <li> <a href="#"> My Wishlist </a></li>
+                        </ul>
+                    </aside>
+                    <aside class="col-sm-2  col-md-2">
+                        <h6 class="title">Our app</h6>
+                        <a href="#" class="d-block mb-2"><img src="~/images/misc/appstore.png" height="40"></a>
+                        <a href="#" class="d-block mb-2"><img src="~/images/misc/playmarket.png" height="40"></a>
+                    </aside>
+                </div> <!-- row.// -->
+            </section>	<!-- footer-top.// -->
+
+            <section class="footer-copyright border-top">
+                <p class="float-left text-muted"> © 2019 Company  All rights resetved </p>
+                <p target="_blank" class="float-right text-muted">
+                    <a href="#">Privacy &amp; Cookies</a> &nbsp;   &nbsp;
+                    <a href="#">Accessibility</a>
+                </p>
+            </section>
+        </div><!-- //container -->
+    </footer>
+
+
+    <script src="~/js/jquery/jquery.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

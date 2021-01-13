@@ -1,0 +1,43 @@
+﻿
+<div class="card">
+    @foreach (var orden in ViewBag.Ordenes)
+    {
+
+
+        <article class="card-body">
+            <header class="mb-4">
+                <h4 class="card-title">Orden del @orden.FechaGen</h4>
+            </header>
+            <div class="row">
+                @foreach (var detalle in orden.detalles)
+                {
+
+
+                    <div class="col-md-6">
+                        <figure class="itemside  mb-3">
+                            <div class="aside"><img src="@Url.Content(detalle.Producto.Image)" class="border img-xs"></div>
+                            <figcaption class="info">
+                                <p>@detalle.Producto.Nombre </p>
+                                <span>Cantidad = @detalle.Cantidad Total: @detalle.Producto.Precio </span>
+                            </figcaption>
+                        </figure>
+                    </div> <!-- col.// -->
+                }
+            </div> <!-- row.// -->
+        </article> <!-- card-body.// -->
+        <article class="card-body border-top">
+
+            <dl class="row">
+                <dt class="col-sm-10">Subtotal: </dt>
+                <dd class="col-sm-2 text-right"><strong>@orden.SubTotal</strong></dd>
+
+                <dt class="col-sm-10">Tax </dt>
+                <dd class="col-sm-2 text-right text-success"><strong>@orden.TotalItebis</strong></dd>
+
+                <dt class="col-sm-10">Total:</dt>
+                <dd class="col-sm-2 text-right"><strong class="h5 text-dark">@orden.Total</strong></dd>
+            </dl>
+
+        </article> <!-- card-body.// -->
+    }
+</div>

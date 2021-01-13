@@ -1,0 +1,166 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+}
+@using Microsoft.AspNetCore.Http
+@using Shop.Utilities
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    string username = HttpContextAccessor.HttpContext.Session.GetString("Username");
+    string nombre = HttpContextAccessor.HttpContext.Session.GetString("Nombre");
+    string apellido = HttpContextAccessor.HttpContext.Session.GetString("Apellido");
+    bool isUserConnected = string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("Username"));
+}
+
+<header class="section-header">
+
+    <section class="header-main border-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-2 col-4">
+                    <a href="@Url.Action("MainPage","Home")" class="brand-wrap">
+                        <img class="logo" src="~/images/logo.png">
+                    </a> <!-- brand-wrap.// -->
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <!--<form action="#" class="search"> -->
+                    <div class="input-group w-100">
+                        <input type="text" class="form-control" id="searchfieldID" placeholder="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="searchbuttonId">
+                                <i class="fa fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                    <!--</form>--> <!-- search-wrap .end// -->
+                </div> <!-- col.// -->
+                <div class="col-lg-4 col-sm-6 col-12">
+                    <div class="widgets-wrap float-md-right">
+                        <div class="widget-header  mr-3">
+                            <a href="@Url.ActionLink("CartPage","Cart")" class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></a>
+                        </div>
+                        @if(!isUserConnected)
+                        {
+                            <div class="widget-header icontext">
+                                <a href="@Url.ActionLink("ProfilePage", "Profile")" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
+                                <div class="text">
+                                    <span class="text-muted">Bienvenido!</span>
+                                    <div>
+                                        <a>@nombre @apellido</a> |
+                                        <a href="#"> @Html.ActionLink("Cerrar Sesion", "LogOut","Login")</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="widget-header icontext">
+                                <a href="@Url.Action("LoginPage","Login")" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
+                                <div class="text">
+                                    <span class="text-muted">Bienvenido!</span>
+                                    <div>
+                                        <a href="#">@Html.ActionLink("Iniciar sesion", "LoginPage", "Login")</a> |
+                                        <a href="#"> @Html.ActionLink("Registrar", "RegisterPage", "Register")</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div> <!-- widgets-wrap.// -->
+                </div> <!-- col.// -->
+            </div> <!-- row.// -->
+        </div> <!-- container.// -->
+    </section> <!-- header-main .// -->
+</header> <!-- section-header.// -->
+
+
+<nav class="navbar navbar-main navbar-expand-lg navbar-light border-bottom">
+    <div class="container">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav" aria-controls="main_nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="main_nav">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#">@Html.ActionLink("Home", "MainPage", "Home", null, new { @class = "nav-link" })</a>
+                </li>
+                @{
+                    List<Categoria> categorias = new List<Categoria>(Model.categorias);
+                    for (int i = 0; i < 8; i++)
+                    {
+                        Categoria categoria = categorias[0];
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">@Html.ActionLink(categorias[0].Nombre, "SearchPage", "Search", new { @identificador = categoria.CategoriaID, @nombre_categoria = categoria.Nombre}, new { @class = "nav-link" })</a>
+                        </li>
+                        categorias.RemoveAt(0);
+                    }
+                    if (categorias.Count > 0)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> More</a>
+                            <div class="dropdown-menu">
+                                @foreach (var categoria in categorias)
+                                {
+                                    <a class="dropdown-item" href="#">@categoria.Nombre</a>
+                                }
+
+                            </div>
+                        </li>
+                    }
+
+                    
+                    }
+                @* @foreach (var categoria in Model.categorias)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">@categoria.Nombre</a>
+                        </li>
+                    }*@
+                @* <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Supermarket</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Partnership</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Baby &amp Toys</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Fitness sport</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Clothing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Furnitures</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> More</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Foods and Drink</a>
+                            <a class="dropdown-item" href="#">Home interior</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Category 1</a>
+                            <a class="dropdown-item" href="#">Category 2</a>
+                            <a class="dropdown-item" href="#">Category 3</a>
+                        </div>
+                    </li>*@
+            </ul>
+        </div> <!-- collapse .// -->
+    </div> <!-- container .// -->
+</nav>
+<script type="text/javascript">
+
+    $('#searchbuttonId').click(function () {
+        var searchInput = $("#searchfieldID").val().trim();
+        window.location.href = "@Url.Action("SearchPage", "Search")?searchvalue=" + searchInput;
+    });
+</script>

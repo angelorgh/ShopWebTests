@@ -1,0 +1,111 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<article class="card mb-4">
+<div class="card-body">
+    <h4 class="card-title mb-4">Nueva Direción</h4>
+    <form action="">
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label>Provincia</label>
+                <input type="text" id="provinciaInputId" placeholder="Type here" class="form-control">
+            </div>
+            <div class="form-group col-sm-6">
+                <label>Ciudad</label>
+                <input type="text" id="ciudadInputId" placeholder="Type here" class="form-control">
+            </div>
+            <div class="form-group col-sm-8">
+                <label>Direccion #1:</label>
+                <input type="text" id="direcion1InputId"placeholder="Type here" class="form-control">
+            </div>
+            <div class="form-group col-sm-8">
+                <label>Direccion #2:</label>
+                <input type="text" id="direccion2InputId" placeholder="Type here" class="form-control">
+            </div>
+
+        </div> <!-- row.// -->
+        <div class="form-group col-sm-6">
+            <button type="button" id="addButtonId"class="btn btn-success">Agregar</button>
+           @* <a href="#" class="btn btn-success"> Make Purchase </a>*@
+            @*<input type="button" id="pedirbutton" name="delete" value="Make Purchase" class="btn btn-succes">*@
+        </div>
+    </form>
+</div> <!-- card-body.// -->
+</article> <!-- card.// -->
+
+<script>
+    $(document).ready(function () {
+
+        $('#addButtonId').click(function () {
+            var provinciaInput = $("#provinciaInputId");
+            var ciudadInput = $("#ciudadInputId");
+            var direccion1Input = $("#direcion1InputId");
+            var dirrecion2Input  = $("#direccion2InputId");
+
+            if (provinciaInput.val().trim() != "") {
+                provinciaInput.removeClass("is-invalid");
+                provinciaInput.addClass("is-valid");
+            } else {
+                provinciaInput.removeClass("is-valid");
+                provinciaInput.addClass("is-invalid");
+            }
+
+            if (ciudadInput.val().trim() != "") {
+                ciudadInput.removeClass("is-invalid");
+                ciudadInput.addClass("is-valid");
+            } else {
+                ciudadInput.removeClass("is-valid");
+                ciudadInput.addClass("is-invalid");
+            }
+
+            if (direccion1Input.val() != "") {
+                direccion1Input.removeClass("is-invalid");
+                direccion1Input.addClass("is-valid");
+            } else {
+                direccion1Input.removeClass("is-valid");
+                direccion1Input.addClass("is-invalid");
+            }
+
+            if (dirrecion2Input.val() != "") {
+                dirrecion2Input.removeClass("is-invalid");
+                dirrecion2Input.addClass("is-valid");
+            } else {
+                dirrecion2Input.removeClass("is-valid");
+                dirrecion2Input.addClass("is-invalid");
+            }
+
+
+            if ($(".is-valid").length == 4) {
+                Add(provinciaInput.val().trim(), ciudadInput.val().trim(), direccion1Input.val().trim(), dirrecion2Input.val().trim());
+            }
+            
+
+            function Add(provincia, ciudad, direccion1, direccion2) {
+                event.preventDefault()
+                console.log(provincia);
+                console.log(ciudad);
+                console.log(direccion1);
+                console.log(direccion2);
+                 $.ajax({
+                   url: "@Url.Action("AgregarDireccion", "Profile")",
+                    type: "POST",
+                     data: { _provincia: provincia, _ciudad: ciudad, _direccion1: direccion1, _direccion2: direccion2 },
+                    success: function (response) {
+                       if (!response) {
+                           console.log("Failed.")
+                        } else {
+                            window.location = "@Url.Content("~/Profile/DirectionPage")";
+                        }
+                    }
+
+                });
+            }
+
+
+
+        });
+
+    });
+</script>

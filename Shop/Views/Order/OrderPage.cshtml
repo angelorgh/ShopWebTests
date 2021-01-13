@@ -1,0 +1,213 @@
+@using Microsoft.AspNetCore.Http
+@using Microsoft.VisualBasic.CompilerServices
+@using Shop.Utilities
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    string username = HttpContextAccessor.HttpContext.Session.GetString("Username");
+    string nombre = HttpContextAccessor.HttpContext.Session.GetString("Nombre");
+    string apellido = HttpContextAccessor.HttpContext.Session.GetString("Apellido");
+    bool isUserConnected = string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("Username"));
+	decimal totalITBIS = SessionHelper.GetTotalITBISOfCart(ViewBag.cart);
+	totalITBIS = Decimal.Round(totalITBIS,2);
+	decimal totalPrice = SessionHelper.GetTotalPriceOfCart(ViewBag.cart);
+	totalPrice = Decimal.Round(totalPrice, 2);
+	decimal totalPriceWithITBIS = totalPrice + totalITBIS;
+	totalPriceWithITBIS = Decimal.Round(totalPriceWithITBIS,2);
+	int itemcount = SessionHelper.GetNumberOfItemsInCart(ViewBag.cart);
+}
+
+<section class="section-content padding-y bg">
+	<div class="container">
+
+		<!-- ============================ COMPONENT 2 ================================= -->
+		<div class="row">
+			<main class="col-md-8">
+
+				<article class="card mb-4">
+					<div class="card-body">
+						<h4 class="card-title mb-4">Revision Carrito</h4>
+						<div class="row">
+							@{
+								foreach (var item in ViewBag.Cart)
+								{
+									<div class="col-md-6">
+										<figure class="itemside  mb-4">
+											<div class="aside"><img src="@Url.Content(item.Producto.Image)" class="border img-sm"></div>
+											<figcaption class="info">
+												@{
+													decimal priceofallitems = Decimal.Round(@item.Cantidad * @item.Producto.Precio,2);
+												}
+												<p>@item.Producto.Nombre </p>
+												<span class="text-muted">@item.Cantidad x @item.Producto.Precio = RD$ @priceofallitems </span>
+											</figcaption>
+										</figure>
+									</div> <!-- col.// -->
+								}
+							}
+						</div> <!-- row.// -->
+					</div> <!-- card-body.// -->
+				</article> <!-- card.// -->
+			
+			
+				<article class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Informacion de Envio</h4>
+                        <a href="@Url.Action("DirectionPage","Profile")" class="btn btn-primary btn-sm">Agregar </a>
+                        <form action="">
+                            <div class="row">
+                                @{
+                                    foreach (var direccion in ViewBag.Direcciones)
+                                    {
+                                        <div class="form-group col-sm-6">
+                                            <label class="js-check box">
+                                                <input type="radio" name="direccion" value="@direccion.IDDireccion" checked>
+                                                <h6 class="title">Direccion</h6>
+                                                <p class="text-muted">@direccion.Direccion1</p>
+                                                <p class="text-muted">@direccion.Direccion2</p>
+                                                <p class="text-muted">@direccion.Provincia</p>
+                                                <p class="text-muted">@direccion.Ciudad</p>
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </form>
+                    </div> 
+				</article> 
+
+
+				<article class="card mb-4" id="accordion_pay">
+					<div class="card-body">
+						<h4 class="card-title mb-4">Informacion de Pago</h4>
+						<header class="card-header">
+							<img src="~/images/misc/payment-card.png" class="float-right" height="24">  
+							<label class="form-check" data-toggle="collapse" data-target="#pay_payme">
+								<h6 class="form-check-label"> Tarjeta de Credito  </h6>
+							</label>
+						</header>
+						<div id="pay_payme" data-parent="#accordion_pay">
+							<div class="card-body">
+								<p class="alert alert-success">Siempre tomamos en cuenta tu privacidad.</p>
+								<form class="form-inline">
+									<input id="ccnumber" type="text" class="form-control mr-2" placeholder="xxxx-xxxx-xxxx-xxxx" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" name="">
+									<input id="exdate" type="text" class="form-control mr-2" style="width: 100px"  placeholder="mm/yy" name="">
+									<input id="cvcnumber" type="text" maxlength="3" class="form-control mr-2"  style="width: 100px"  placeholder="cvc" name="">
+								</form>
+							</div>
+						</div> 
+					</div>
+	
+				</article>
+  
+			</main> <!-- col.// -->
+			<aside class="col-md-4">
+				<div class="card shadow">
+					<div class="card-body">
+						<h4 class="mb-3">Overview</h4>
+						<dl class="dlist-align">
+							<dt class="text-muted">Tipo Entrega:</dt>
+							<dd>Delivery</dd>
+						</dl>
+						<dl class="dlist-align">
+							<dt class="text-muted">Tipo Delivery:</dt>
+							<dd>Estandar</dd>
+						</dl>
+						<hr>
+						<dl class="dlist-align">
+							<dt>Total:</dt>
+							<dd class="h5">RD$ @totalPriceWithITBIS</dd>
+						</dl>
+						<hr>
+						<input type="button" id="pedirbutton" value="Pedir" class="btn btn-primary btn-block">
+				
+					</div> <!-- card-body.// -->
+				</div> <!-- card.// -->
+			</aside> <!-- col.// -->
+		</div> <!-- row.// -->
+
+		<!-- ============================ COMPONENT 2 END//  ================================= -->
+
+	</div> <!-- container .//  -->
+</section>
+
+<script>
+	$(document).ready(function (){
+		$("input[type='button']").click(function () {
+			event.preventDefault();
+			var radioDireccion = $("input[name='direccion']:checked");
+			var ccnumber = $("ccnumber");
+			var exdate = $("exdate");
+			var cvcnumber = $("cvcnumber");
+
+			if (radioDireccion.val()){
+				Order();
+				// radioDireccion.removeClass("is-invalid");
+				// radioDireccion.addClass("is-valid");
+			}
+			else{
+				radioDireccion.removeClass("is-valid");
+                radioDireccion.addClass("is-invalid");
+			}
+			
+			// if(ccnumber.val() != ""){
+			// 	ccnumber.removeClass("is-invalid");
+			// 	ccnumber.addClass("is-valid");
+			// }
+			// else{
+			// 	ccnumber.removeClass("is-valid");
+            //     ccnumber.addClass("is-invalid");
+			// }
+			//
+			// if(exdate.val() != ""){
+			// 	exdate.removeClass("is-invalid");
+			// 	exdate.addClass("is-valid");
+			// }
+			// else{
+			// 	exdate.removeClass("is-valid");
+			// 	exdate.addClass("is-invalid");
+			// }
+			//
+			// if(cvcnumber.val() != ""){
+			// 	cvcnumber.removeClass("is-invalid");
+			// 	cvcnumber.addClass("is-valid");
+			// }
+			// else{
+			// 	cvcnumber.removeClass("is-valid");
+			// 	cvcnumber.addClass("is-invalid");
+			// }
+			//
+			// if ($(".is-valid").lenght == 3){
+			// 	Order();
+			// }
+			
+			function Order(){
+				event.preventDefault()
+				
+				var radioDireccion = $("input[name='direccion']:checked").val();
+				var ccnumber = $("ccnumber").val();
+				var exdate = $("exdate").val();
+				var cvcnumber = $("cvcnumber").val();
+				
+				$.ajax({
+					url: "@Url.Content("~/Order/Order")",
+					type: "POST",
+					data:{
+						iddireccion: radioDireccion,
+						ccnumber: ccnumber,
+						exdate: exdate,
+						cvcnumber: cvcnumber
+					},
+					success: function (response){
+						if (response == false){
+							
+						} else {
+							
+							window.location = "@Url.Content("~/Profile/UserOrdersPage")";
+						}
+					}
+				});
+			}
+
+		});
+	});
+</script>

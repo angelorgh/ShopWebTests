@@ -1,0 +1,200 @@
+﻿<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+
+    <!-- ============================ COMPONENT REGISTER   ================================= -->
+    <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+        <article class="card-body">
+            <header class="mb-4"><h4 class="card-title">Registrar cuenta</h4></header>
+            <form>
+
+                <div class="form-row">
+
+                    <div class="col form-group">
+                        <label>Nombres</label>
+                        <input id="nombre" type="text" class="form-control" placeholder="">
+                    </div> <!-- form-group end.// -->
+
+                    <div class="col form-group">
+                        <label>Apellidos</label>
+                        <input id="apellido" type="text" class="form-control" placeholder="">
+                    </div> <!-- form-group end.// -->
+
+                </div> <!-- form-row end.// -->
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input id="email" type="email" class="form-control" placeholder="">
+                    <small class="form-text text-muted">Nunca compartiremos tu email con terceros.</small>
+                </div> <!-- form-group end.// -->
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Cedula</label>
+                        <input id="cedula" type="text" class="form-control">
+                    </div> <!-- form-group end.// -->
+                    <div class="form-group col-md-6">
+                        <label>Telefono</label>
+                        <input id="telefono" type="text" class="form-control" placeholder="">
+                    </div>
+                </div> <!-- form-row.// -->
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Crear password</label>
+                        <input id="password" class="form-control" type="password">
+                    </div> <!-- form-group end.// -->
+                    <div class="form-group col-md-6">
+                        <label>Repetir password</label>
+                        <input id="confpassword" class="form-control" type="password">
+                    </div> <!-- form-group end.// -->
+                </div>
+
+                <div class="form-group">
+                    <button id="submit" type="submit" class="btn btn-primary btn-block"> Registrar </button>
+                </div> <!-- form-group// -->
+
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox"> <input id="termscheckbox" type="checkbox" class="custom-control-input" checked=""> 
+                    <div class="custom-control-label"> 
+                        Estoy de acuerdo con los 
+                        <a href="#">terminos y condiciones</a>  
+                        </div> 
+                    </label>
+                </div> <!-- form-group end.// -->
+
+            </form>
+        </article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <p class="text-center mt-4">¿Ya tienes una cuenta? <a href="">@Html.ActionLink("Iniciar sesión","LoginPage","Login")</a></p>
+    <br><br>
+    <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+
+
+</section>
+
+<script>
+    $(document).ready(function () {
+        $("form").submit(function () {
+            event.preventDefault();
+
+            var nombre = $("#nombre");
+            var apellido = $("#apellido");
+            var email = $("#email");
+            var cedula = $("#cedula");
+            var telefono = $("#telefono");
+            var password = $("#password");
+            var confpassword = $("#confpassword");
+
+            if (confpassword.val().trim() != "" && password.val().trim() != "") {
+                if (password.val() != confpassword.val()) {
+                    confpassword.removeClass("is-valid");
+                    password.removeClass("is-valid");
+
+                    confpassword.addClass("is-invalid");
+                    password.addClass("is-invalid");
+                } else {
+                    confpassword.removeClass("is-invalid");
+                    password.removeClass("is-invalid");
+
+                    confpassword.addClass("is-valid");
+                    password.addClass("is-valid");
+                }
+            } else {
+                confpassword.removeClass("is-valid");
+                password.removeClass("is-valid");
+
+                confpassword.addClass("is-invalid");
+                password.addClass("is-invalid");
+            }
+
+            if (email.val().trim() != "") {
+                // ajax verificar usuario
+                email.removeClass("is-invalid");
+                email.addClass("ïs-valid");
+            } else {
+                email.removeClass("is-valid");
+                email.addClass("is-invalid");
+            }
+
+            if (cedula.val().trim() != "") {
+                cedula.removeClass("is-invalid");
+                cedula.addClass("is-valid");
+            } else {
+                cedula.removeClass("is-valid");
+                cedula.addClass("is-invalid");
+            }
+
+            if (nombre.val() != "") {
+                nombre.removeClass("is-invalid");
+                nombre.addClass("is-valid");
+            } else {
+                nombre.removeClass("is-valid");
+                nombre.addClass("is-invalid");
+            }
+
+            if (apellido.val() != "") {
+                apellido.removeClass("is-invalid");
+                apellido.addClass("is-valid");
+            } else {
+                apellido.removeClass("is-valid");
+                apellido.addClass("is-invalid");
+            }
+
+            if (telefono.val() != "") {
+                telefono.removeClass("is-invalid");
+                telefono.addClass("is-valid");
+            } else {
+                telefono.removeClass("is-valid");
+                telefono.addClass("is-invalid");
+            }
+
+            if ($(".is-valid").length == 6) {
+                Registrar();
+            }
+
+            function Registrar() {
+                event.preventDefault();
+
+                var nombre = $("#nombre").val();
+                var apellido = $("#apellido").val();
+                var email = $("#email").val().trim().toLowerCase();
+                var cedula = $("#cedula").val().trim();
+                var telefono = $("#telefono").val().trim();
+                var password = $("#password").val().trim();
+
+                $.ajax({
+                    url: "@Url.Content("~/Register/RegistrarUsuario")",
+                    type: "POST",
+                    data: {
+                        nombre: nombre,
+                        apellido: apellido,
+                        cedula: cedula,
+                        telefono: telefono,
+                        email: email,
+                        password: password
+                    },
+                    success: function (response) {
+                        if (response == false) {
+                        } else {
+                            window.location = "@Url.Content("~/Home/MainPage")";
+                        }
+                    },
+                    error: function (response) {
+                    },
+                    @*done: function (response) {
+
+                    }*@
+
+                });
+
+            }
+
+
+
+        });
+    });
+</script>
+
+
+
+<!-- ========================= SECTION CONTENT END// ========================= -->

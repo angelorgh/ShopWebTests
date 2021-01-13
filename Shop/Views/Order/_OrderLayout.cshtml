@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Login - Shop</title>
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <!-- jQuery -->
+    <script src="~/js/jquery/jquery.min.js" type="text/javascript"></script>
+
+    <!-- Bootstrap4 files-->
+    <script src="~/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <link href="~/css/bootstrap.css" rel="stylesheet" type="text/css" />
+
+    <!-- Font awesome 5 -->
+    <link href="~/fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
+
+    <!-- custom style -->
+    <link href="~/css/ui.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+
+    <!-- custom javascript -->
+    <script src="~/js/script.js" type="text/javascript"></script>
+
+    @*<link href="~/plugins/owlcarousel/assets/owl.carousel.css" rel="stylesheet">
+        <link href="~/plugins/owlcarousel/assets/owl.theme.default.css" rel="stylesheet">
+        <script src="~/plugins/owlcarousel/owl.carousel.min.js"></script>*@
+
+    <script type="text/javascript">
+        /// some script
+
+        // jquery ready start
+        $(document).ready(function () {
+            // jQuery code
+
+        });
+            // jquery end
+    </script>
+
+
+
+</head>
+<body>
+
+        <header class="section-header">
+            <section class="header-main border-bottom">
+                <div class="container">
+                    <a href="@Url.Action("MainPage","Home")" class="brand-wrap">
+                        <img class="logo" src="~/images/logo.png">
+                    </a>
+                </div> <!-- container.// -->
+            </section>
+        </header> <!-- section-header.// -->
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <footer class="section-footer border-top padding-y">
+        <div class="container">
+            <p class="float-md-right">
+                &copy Copyright 2019 All rights reserved
+            </p>
+            <p>
+                <a href="#">Terms and conditions</a>
+            </p>
+        </div><!-- //container -->
+    </footer>
+
+
+    <script src="~/js/jquery/jquery.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

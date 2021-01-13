@@ -1,0 +1,177 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model CategoriaMarcaProducto
+    <!-- ========================= SECTION PAGETOP ========================= -->
+    <section class="section-pagetop bg">
+        <div class="container">
+            <h2 class="title-page">@Model.categoria.Nombre</h2>
+            <nav>
+                <ol class="breadcrumb text-white">
+                    <li class="breadcrumb-item"><a href="#">@Html.ActionLink("Home", "MainPage", "Home", null, new { @class = "breadcrumb-item" })</a></li>
+                    <li class="breadcrumb-item"><a href="#">@Model.categoria.Nombre</a></li>
+                </ol>
+            </nav>
+        </div> <!-- container //  -->
+    </section>
+    <!-- ========================= SECTION INTRO END// ========================= -->
+    <!-- ========================= SECTION CONTENT ========================= -->
+    <section class="section-content padding-y">
+        <div class="container">
+
+            <div class="row">
+                <aside class="col-md-3">
+
+                    <div class="card">
+                        <article class="filter-group">
+                        </article> <!-- filter-group  .// -->
+                        <!--<article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Marcas </h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_2" style="">
+                                <div class="card-body">
+                                    @foreach (var marca in Model.marcas)
+                                    {
+                                        <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" checked="" class="custom-control-input">
+                                            <div class="custom-control-label">
+                                                @marca.Nombre
+                                                <b class="badge badge-pill badge-light float-right">120</b>
+                                            </div>
+                                        </label>
+                                    }-->
+
+                                    @*<label class="custom-control custom-checkbox">
+                                        <input type="checkbox" checked="" class="custom-control-input">
+                                        <div class="custom-control-label">
+                                            Toyota
+                                            <b class="badge badge-pill badge-light float-right">15</b>
+                                        </div>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" checked="" class="custom-control-input">
+                                        <div class="custom-control-label">
+                                            Mitsubishi
+                                            <b class="badge badge-pill badge-light float-right">35</b>
+                                        </div>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" checked="" class="custom-control-input">
+                                        <div class="custom-control-label">
+                                            Nissan
+                                            <b class="badge badge-pill badge-light float-right">89</b>
+                                        </div>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <div class="custom-control-label">
+                                            Honda
+                                            <b class="badge badge-pill badge-light float-right">30</b>
+                                        </div>
+                                    </label>*@ 
+                                <!--</div>--><!-- card-body.// -->
+                            <!--</div>
+                        </article>--> <!-- filter-group .// -->
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Rango de Precios </h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_3" style="">
+                                <div class="card-body">
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Min</label>
+                                            <input class="form-control" id="minInputId" placeholder="$0" type="number">
+                                        </div>
+                                        <div class="form-group text-right col-md-6">
+                                            <label>Max</label>
+                                            <input class="form-control" id="maxInputId" placeholder="$1,0000" type="number">
+                                        </div>
+                                    </div> <!-- form-row.// -->
+                                    <button id="princeRangeButtonId" class="btn btn-block btn-primary">Apply</button>
+                                </div><!-- card-body.// -->
+                            </div>
+                        </article> <!-- filter-group .// -->
+
+                    </div> <!-- card.// -->
+
+                </aside> <!-- col.// -->
+                
+                    <main class="col-md-9">
+
+                        <header class="border-bottom mb-4 pb-3">
+                            <div class="form-inline">
+                                <span class="mr-md-auto">@Model.productos.Count Items found </span>                                
+                            </div>
+                        </header><!-- sect-heading -->
+
+                        @foreach (var producto in Model.productos)
+                        {
+                            <article class="card card-product-list">
+                                <div class="row no-gutters">
+                                    <aside class="col-md-3">
+                                        <a href="#" class="img-wrap"><img src="@Url.Content(producto.Image)"></a>
+                                    </aside> <!-- col.// -->
+                                    <div class="col-md-6">
+                                        <div class="info-main">
+                                            <a href="#" class="h5 title"> @producto.Nombre  </a>
+                                            <p>@producto.Descripcion </p>
+                                        </div> <!-- info-main.// -->
+                                    </div> <!-- col.// -->
+                                    <aside class="col-sm-3">
+                                        <div class="info-aside">
+                                            <div class="price-wrap">
+                                                <span class="price h5"> @producto.Precio </span>
+                                            </div> <!-- info-price-detail // -->
+                                            @*<p class="text-success">Free shipping</p>*@
+                                            <br>
+                                            <p>
+                                                <!--<a href="#" class="btn btn-primary btn-block"> Detalles </a>-->
+                                                <a href="@Url.Action("AddToCart","Cart", new {idproducto = producto.ProductoID, cantidad = 1})" class="btn btn-light btn-block">
+                                                    <i class="fa fa-heart"></i>
+                                                    <span class="text">Agregar a carrito</span>
+                                                </a>
+                                            </p>
+                                        </div> <!-- info-aside.// -->
+                                    </aside> <!-- col.// -->
+                                </div> <!-- row.// -->
+                            </article> <!-- card-product .// -->
+
+                        }
+
+
+                        <nav aria-label="Page navigation sample">
+                            <ul class="pagination">
+                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            </ul>
+                        </nav>
+                    </main> <!-- col.// -->
+
+            </div> <!-- container .//  -->
+        </div>
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+    <script type="text/javascript">
+
+        $('#princeRangeButtonId').click(function () {
+            var minInput = $("#minInputId").val().trim();
+            var maxInput = $("#maxInputId").val().trim();
+            
+            window.location.href = window.location.href + "&min_value=" + minInput + "&max_value=" + maxInput; 
+            
+    });
+    </script>

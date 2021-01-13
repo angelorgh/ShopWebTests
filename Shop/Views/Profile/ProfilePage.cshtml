@@ -1,0 +1,95 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    string username = HttpContextAccessor.HttpContext.Session.GetString("Username");
+    string nombre = HttpContextAccessor.HttpContext.Session.GetString("Nombre");
+    string apellido = HttpContextAccessor.HttpContext.Session.GetString("Apellido");
+    bool isUserConnected = string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("Username"));
+}
+
+<!DOCTYPE html>
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop">
+<div class="container">
+	<h2 class="title-page">Mi Cuenta</h2>
+</div> <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+@*<section class="section-content padding-y">
+	<div class="container">*@
+
+		
+			<!--<aside class="col-md-3">
+				<div class="list-group" id="myList" role="tablist">
+					<a class="list-group-item list-group-item-action active" href="DirectionPage" role="tab"> Informacion de Cuenta </a>
+					<a class="list-group-item list-group-item-action" href="#ordenes" role="tab"> Mis Ordenes </a>
+					<a class="list-group-item list-group-item-action" href="#ordenesrecibidas" role="tab"> Ordenes Recibidas </a>
+					<a class="list-group-item list-group-item-action" href="#opciones" role="tab"> Opciones </a>
+				</div>
+			</aside>--> <!-- col.// -->
+			@*<main class="col-md-9">*@
+
+				<div class="tab-content">
+					<div class="tab-pane active" id="informacion" role="tabpanel">
+						<article class="card mb-3">
+							<div class="card-body">
+								<figure class="icontext">
+									<div class="text">
+										<strong> @nombre @apellido </strong> <br> 
+										@username <br> 
+										<a href="#">Editar*</a>
+									</div>
+								</figure>
+							</div> <!-- card-body .// -->
+						</article> <!-- card.// -->
+         
+						
+					</div>
+					<div class="tab-pane" id="ordenes" role="tabpanel">
+                 		
+					</div>
+					<div class="tab-pane" id="ordenesrecibidas" role="tabpanel">
+                             		
+					</div>
+					<div class="tab-pane" id="opciones" role="tabpanel">
+					</div>
+				</div>
+
+			<!--</main>--> <!-- col.// -->
+		 <!--Finish-->
+		
+		
+
+	<!--</div>--> <!-- container .//  -->
+<!--</section>-->
+
+<script>
+	$(function (){
+		$("#myList a:first-child").tab('show');
+	});
+</script>
+
+<script>
+$(document).ready(function (){
+	$(".list-group-item").click(function () {
+		let listItems = $(".list-group-item");
+		for (let i = 0; i < listItems.length; i++){
+			listItems[i].classList.remove("active");
+		}
+		this.classList.add("active");
+		
+		let tabPanes = $(".tab-pane");
+		for (let i = 0; i < tabPanes.length; i++){
+			$(tabPanes[i]).tab('hide');
+		}
+		
+		$(this).tab('hide');
+		
+	});
+});
+	
+</script>
+
